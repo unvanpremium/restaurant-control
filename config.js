@@ -1,6 +1,6 @@
 
 // Supabase bağlantı məlumatları
 window.RC_CONFIG = {
-  SUPABASE_URL: "sb_publishable_jFX_DT_CBSO2IcNN4Y9rIQ_rwUkysOT",
-  SUPABASE_ANON_KEY: "sb_publishable_jFX_DT_CBSO2IcNN4Y9rIQ_rwUkysOT"
+  SUPABASE_URL: "https://supabase.com/dashboard/project/lmhmodfjxpzcxfdeyjiz",
+  SUPABASE_ANON_KEY: "sb_publishable_zDyAbAju3Thwqulx0bvOhQ_rmK0sUGL"
 };
