@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17243a"><meta name="description" content="Restaurant Control — restoran problemlərinin idarəetmə sistemi">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
+<title>Restaurant Control</title>
+<style>
+:root{--bg:#f4f6fa;--ink:#172033;--muted:#718096;--line:#e7ebf2;--nav:#17243a;--blue:#3568e8;--red:#df4b55;--amber:#c68a19;--green:#21966b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}.hidden{display:none!important}
+.app{display:flex;min-height:100vh}.sidebar{width:245px;background:var(--nav);color:#fff;padding:24px 16px;display:flex;flex-direction:column;gap:25px}.brand{display:flex;align-items:center;gap:10px;padding:0 6px}.logo{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#5f8cff,#3155c9);display:grid;place-items:center;font-size:20px}.brand strong{display:block}.brand small{color:#aab8d0;font-size:10px;letter-spacing:1.2px}.nav-label{font-size:10px;color:#8394b2;letter-spacing:1.5px;padding:0 10px;margin-bottom:7px}.nav button{display:flex;width:100%;gap:12px;text-align:left;background:transparent;color:#c7d2e4;padding:12px;margin:3px 0}.nav button.active,.nav button:hover{background:#293b59;color:white}.side-note{margin-top:auto;border:1px solid #354761;border-radius:12px;padding:12px;color:#b9c6d9;font-size:11px}
+main{flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px}.user{display:flex;align-items:center;gap:9px;font-size:13px}.avatar{width:34px;height:34px;border-radius:50%;background:#e8efff;color:#315ed2;display:grid;place-items:center;font-weight:800}.content{padding:28px 30px;max-width:1400px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}.heading h1{margin:0 0 4px;font-size:25px}.heading p{margin:0;color:var(--muted)}.primary{background:var(--blue);color:#fff}.secondary{background:#eef2f8;color:#34435a}.danger{background:#fff0f0;color:var(--red)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 7px 24px #192a460a}.stat{padding:17px}.stat span{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:28px;margin-top:8px}.panel{overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 19px;border-bottom:1px solid var(--line)}.panel-head h2{font-size:16px;margin:0}.filters{display:flex;gap:8px;flex-wrap:wrap}.filters input,.filters select,.field input,.field select,.field textarea{border:1px solid #dfe5ee;border-radius:9px;padding:10px;background:white;color:var(--ink);width:100%}.filters input,.filters select{width:auto;min-width:140px}table{border-collapse:collapse;width:100%;min-width:700px}th,td{text-align:left;padding:13px 16px;border-bottom:1px solid #eff2f6;font-size:13px}th{font-size:10px;color:#8390a3;text-transform:uppercase;letter-spacing:.7px;background:#fbfcfe}.problem-title{font-weight:700}.sub{display:block;color:var(--muted);font-size:11px;margin-top:3px}.pill{display:inline-block;border-radius:30px;padding:5px 9px;font-size:11px;font-weight:750;white-space:nowrap}.p-high,.s-open{background:#fff0f0;color:#c53c47}.p-medium,.s-progress{background:#fff6e6;color:#a56c0b}.p-low{background:#edf3ff;color:#4268c7}.s-done{background:#e9f8f1;color:#16815a}.mini{padding:7px 9px;background:#f1f4f9;color:#46546b;font-size:11px;margin:2px}.table-wrap{overflow:auto}.empty{text-align:center;padding:38px;color:var(--muted)}.view{display:none}.view.active{display:block}.modal-back{position:fixed;inset:0;background:#101a2c88;display:none;align-items:center;justify-content:center;padding:15px;z-index:5}.modal-back.show{display:flex}.modal{background:#fff;width:min(620px,100%);max-height:92vh;overflow:auto;border-radius:16px}.modal-head{padding:18px 21px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.modal-head h2{margin:0;font-size:18px}.form{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:700;color:#56647a}.field.full,.form-actions{grid-column:1/-1}.field textarea{min-height:90px}.form-actions{display:flex;justify-content:flex-end;gap:8px}.notice{background:#fff8e9;border:1px solid #f4e2b8;color:#795816;border-radius:10px;padding:12px;font-size:12px;margin-bottom:15px}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}.login{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;width:min(420px,100%);box-shadow:0 15px 50px #192a4612}.login h1{font-size:22px;margin:0 0 5px}.login p{color:var(--muted);font-size:13px;margin:0 0 20px}.login .field{margin:13px 0}.login button{width:100%}.error{color:#c53c47;font-size:12px;margin-top:10px}.photo{width:42px;height:42px;object-fit:cover;border-radius:7px}
+@media(max-width:800px){.sidebar{width:65px;padding:18px 7px}.brand{justify-content:center}.brand>div:last-child,.nav-label,.nav button span:last-child,.side-note{display:none}.nav button{justify-content:center;padding:13px 3px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:20px 14px}.topbar{padding:0 14px}}
+@media(max-width:540px){.heading{flex-direction:column}.form{grid-template-columns:1fr}.field.full,.form-actions{grid-column:1}.panel-head{align-items:flex-start;flex-direction:column}.filters{width:100%}.filters input,.filters select{flex:1;min-width:0}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:24px}}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login-wrap">
+ <form id="loginForm" class="login">
+  <div class="brand" style="padding:0 0 18px"><div class="logo">✓</div><div><strong>Restaurant Control</strong><small>MANAGEMENT SYSTEM</small></div></div>
+  <h1>Hesabınıza daxil olun</h1><p>Restoran problemlərini izləmək üçün giriş edin.</p>
+  <div class="field"><label>E-poçt</label><input id="email" type="email" required autocomplete="username" placeholder="name@example.com"></div>
+  <div class="field"><label>Şifrə</label><input id="password" type="password" required autocomplete="current-password" placeholder="Şifrəniz"></div>
+  <button class="primary" type="submit" id="loginBtn">Daxil ol</button><div id="loginError" class="error"></div>
+  <p style="margin-top:16px;font-size:11px">Hesab administrator tərəfindən yaradılmalıdır.</p>
+ </form>
+</div>
+<div id="appScreen" class="app hidden">
+ <aside class="sidebar"><div class="brand"><div class="logo">✓</div><div><strong>Restaurant Control</strong><small>MANAGEMENT SYSTEM</small></div></div>
+  <div class="nav"><div class="nav-label">ƏSAS MENYU</div><button class="active" data-view="dashboard"><span>▦</span><span>İdarə paneli</span></button><button data-view="problems"><span>☷</span><span>Bütün problemlər</span></button></div>
+  <div class="side-note">Məlumatlar təhlükəsiz onlayn bazada saxlanılır.</div>
+ </aside>
+ <main><header class="topbar"><div style="font-size:13px;color:#718096">Restaurant Control / <b id="crumb">İdarə paneli</b></div><div class="user"><div class="avatar" id="avatar">RC</div><div><b id="userName">İstifadəçi</b><div id="userRole" style="color:#8290a4;font-size:11px">İstifadəçi</div></div><button class="secondary" id="logoutBtn">Çıxış</button></div></header>
+ <div class="content">
+  <section class="view active" id="dashboard"><div class="heading"><div><h1>İdarə paneli</h1><p>Restorandakı problemlərin ümumi vəziyyəti.</p></div><button class="primary" onclick="openModal()">＋ Yeni problem</button></div>
+   <div class="stats"><div class="stat"><span>Ümumi problemlər</span><strong id="totalCount">0</strong></div><div class="stat"><span>Aktiv</span><strong id="openCount">0</strong></div><div class="stat"><span>Prosesdə</span><strong id="progressCount">0</strong></div><div class="stat"><span>Həll olunub</span><strong id="doneCount">0</strong></div></div>
+   <div class="panel"><div class="panel-head"><h2>Son problemlər</h2><button class="secondary" onclick="switchView('problems')">Hamısına bax →</button></div><div id="recentTable"></div></div>
+  </section>
+  <section class="view" id="problems"><div class="heading"><div><h1>Bütün problemlər</h1><p>Qeydləri əlavə edin və həll vəziyyətini izləyin.</p></div><button class="primary" onclick="openModal()">＋ Yeni problem</button></div>
+   <div class="panel"><div class="panel-head"><h2>Problem siyahısı</h2><div class="filters"><input id="search" placeholder="Axtar..." oninput="render()"><select id="statusFilter" onchange="render()"><option value="">Bütün statuslar</option><option value="open">Aktiv</option><option value="progress">Prosesdə</option><option value="done">Həll olunub</option></select><select id="priorityFilter" onchange="render()"><option value="">Bütün prioritetlər</option><option value="high">Təcili</option><option value="medium">Orta</option><option value="low">Aşağı</option></select></div></div><div id="allTable"></div></div>
+  </section>
+ </div></main>
+</div>
+<div class="modal-back" id="modalBack"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Yeni problem</h2><button class="secondary" onclick="closeModal()">✕</button></div>
+<form class="form" id="problemForm"><input type="hidden" id="editId">
+<div class="field full"><label>Problemin adı *</label><input id="title" required maxlength="120"></div>
+<div class="field"><label>Kateqoriya</label><select id="category"><option>Mətbəx</option><option>Servis</option><option>Anbar</option><option>Texniki</option><option>İşçi heyəti</option><option>Maliyyə</option><option>Digər</option></select></div>
+<div class="field"><label>Prioritet</label><select id="priority"><option value="high">Təcili</option><option value="medium" selected>Orta</option><option value="low">Aşağı</option></select></div>
+<div class="field"><label>Status</label><select id="status"><option value="open">Aktiv</option><option value="progress">Prosesdə</option><option value="done">Həll olunub</option></select></div>
+<div class="field"><label>Qeyd edən</label><input id="author" placeholder="Ad soyad"></div>
+<div class="field full"><label>Açıqlama</label><textarea id="description"></textarea></div>
+<div class="field full"><label>Şəkil</label><input id="photo" type="file" accept="image/*"></div>
+<div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">Ləğv et</button><button class="primary" type="submit" id="saveBtn">Yadda saxla</button></div>
+</form></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>
