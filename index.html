@@ -1,10 +1,70 @@
 <!doctype html>
 <html lang="az">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17243a"><meta name="description" content="Restaurant Control — restoran problemlərinin idarəetmə sistemi">
-<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
-<title>Restaurant Control</title>
+
+.restaurant-header {
+  background: #202B38;
+  padding: 18px 24px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+}
+
+.restaurant-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-logo {
+  width: 65px;
+  height: 65px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-info h1 {
+  color: white;
+  font-size: 21px;
+  margin: 0 0 5px;
+}
+
+.brand-info p {
+  color: #D6DEE8;
+  font-size: 13px;
+  margin: 0 0 4px;
+  letter-spacing: 1px;
+}
+
+.brand-info span {
+  color: #AAB7C5;
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .restaurant-header {
+    padding: 14px;
+  }
+
+  .brand-logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .brand-info h1 {
+    font-size: 17px;
+  }
+}
+
 <style>
 :root{--bg:#f4f6fa;--ink:#172033;--muted:#718096;--line:#e7ebf2;--nav:#17243a;--blue:#3568e8;--red:#df4b55;--amber:#c68a19;--green:#21966b}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650}.hidden{display:none!important}
