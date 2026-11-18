@@ -76,13 +76,15 @@ end; $$;
 create or replace function public.submit_exam_attempt(p_answers jsonb)
 returns jsonb language plpgsql security definer set search_path=public as $$
 declare v_exam_id uuid; v_attempt_id uuid; v_score integer:=0; v_total integer:=0; v_correct integer:=0; v_wrong integer:=0; v_count integer:=0; v_pct numeric(5,2); v_pass boolean;
- v_item jsonb; v_q public.exam_questions%rowtype; v_selected text; v_awarded integer;
+ v_item jsonb; v_q public.exam_questions%rowtype; v_selected text; v_awarded integer; v_expected integer;
 begin
  if auth.uid() is null then raise exception 'Giriş tələb olunur'; end if;
  if jsonb_typeof(p_answers)<>'array' or jsonb_array_length(p_answers)=0 then raise exception 'Cavablar boşdur'; end if;
  select q.exam_id into v_exam_id from public.exam_questions q where q.id=(p_answers->0->>'question_id')::uuid;
  if v_exam_id is null then raise exception 'İmtahan tapılmadı'; end if;
  if not exists(select 1 from public.exam_tests e where e.id=v_exam_id and (e.is_published or public.rc_is_admin())) then raise exception 'İmtahan bağlıdır'; end if;
+ select count(*) into v_expected from public.exam_questions where exam_id=v_exam_id;
+ if jsonb_array_length(p_answers)<>v_expected then raise exception 'Bütün suallara cavab göndərilməlidir'; end if;
  insert into public.exam_attempts(exam_id,user_id,score,total_points,percentage,passed,correct_count,wrong_count) values(v_exam_id,auth.uid(),0,0,0,false,0,0) returning id into v_attempt_id;
  for v_item in select * from jsonb_array_elements(p_answers) loop
   select * into v_q from public.exam_questions where id=(v_item->>'question_id')::uuid and exam_id=v_exam_id;
@@ -91,7 +93,7 @@ begin
   if v_selected not in ('A','B','C','D') then v_selected:=null; end if;
   v_total:=v_total+v_q.points; v_count:=v_count+1; v_awarded:=0;
   if v_selected=v_q.correct_option then v_awarded:=v_q.points;v_score:=v_score+v_awarded;v_correct:=v_correct+1;else v_wrong:=v_wrong+1;end if;
-  insert into public.exam_answers(attempt_id,question_id,selected_option,is_correct,awarded_points) values(v_attempt_id,v_q.id,v_selected,v_selected=v_q.correct_option,v_awarded);
+  insert into public.exam_answers(attempt_id,question_id,selected_option,is_correct,awarded_points) values(v_attempt_id,v_q.id,v_selected,coalesce(v_selected=v_q.correct_option,false),v_awarded);
  end loop;
  if v_total=0 then raise exception 'Sual balları sıfırdır'; end if;
  v_pct:=round((v_score::numeric/v_total)*100,2);v_pass:=v_pct>=80;
