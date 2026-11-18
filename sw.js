@@ -1,4 +1,4 @@
-const CACHE='restaurant-control-v2';
+const CACHE='restaurant-control-v3';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./config.js','./app.js'];
 self.addEventListener('install',e=>e.waitUntil((async()=>{const c=await caches.open(CACHE);await c.addAll(CORE);await self.skipWaiting();})()));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('restaurant-control-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();})()));
