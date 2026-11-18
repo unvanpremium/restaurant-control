@@ -76,6 +76,15 @@ main{flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px so
 
 .finance-stats{grid-template-columns:repeat(4,1fr)}
 .finance-positive{color:#16815a}.finance-negative{color:#c53c47}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;padding:16px}
+.exam-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+.exam-card h3{margin:0 0 6px;font-size:16px}.exam-card p{color:var(--muted);font-size:12px}
+.exam-question{padding:16px;border-bottom:1px solid var(--line)}.exam-question h3{font-size:15px;margin:0 0 12px}
+.exam-options{display:grid;gap:8px}.exam-option{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:13px}
+.exam-option input{margin-top:3px}.exam-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.exam-result{padding:22px;text-align:center}.exam-result strong{font-size:34px;display:block}
+.exam-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}.exam-form-grid .field.full{grid-column:1/-1}
+@media(max-width:540px){.exam-form-grid{grid-template-columns:1fr}.exam-form-grid .field.full{grid-column:1}}
 @media(max-width:800px){.finance-stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -92,7 +101,7 @@ main{flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px so
 </div>
 <div id="appScreen" class="app hidden">
  <aside class="sidebar"><div class="brand"><div class="logo">✓</div><div><strong>Restaurant Control</strong><small>MANAGEMENT SYSTEM</small></div></div>
-  <div class="nav"><div class="nav-label">ƏSAS MENYU</div><button class="active" data-view="dashboard"><span>▦</span><span>İdarə paneli</span></button><button data-view="problems"><span>☷</span><span>Bütün problemlər</span></button><button data-view="finance" id="financeNav" class="hidden"><span>₼</span><span>Maliyyə Statistikası</span></button></div>
+  <div class="nav"><div class="nav-label">ƏSAS MENYU</div><button class="active" data-view="dashboard"><span>▦</span><span>İdarə paneli</span></button><button data-view="problems"><span>☷</span><span>Bütün problemlər</span></button><button data-view="finance" id="financeNav" class="hidden"><span>₼</span><span>Maliyyə Statistikası</span></button><button data-view="exams"><span>✓</span><span>Qarson üçün imtahan</span></button></div>
   <div class="side-note">Məlumatlar təhlükəsiz onlayn bazada saxlanılır.</div>
  </aside>
  <main><header class="topbar"><div style="font-size:13px;color:#718096">Restaurant Control / <b id="crumb">İdarə paneli</b></div><div class="user"><div class="avatar" id="avatar">RC</div><div><b id="userName">İstifadəçi</b><div id="userRole" style="color:#8290a4;font-size:11px">İstifadəçi</div></div><button class="secondary" id="logoutBtn">Çıxış</button></div></header>
@@ -104,6 +113,7 @@ main{flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px so
   <section class="view" id="problems"><div class="heading"><div><h1>Bütün problemlər</h1><p>Qeydləri əlavə edin və həll vəziyyətini izləyin.</p></div><button class="primary" onclick="openModal()">＋ Yeni problem</button></div>
    <div class="panel"><div class="panel-head"><h2>Problem siyahısı</h2><div class="filters"><input id="search" placeholder="Axtar..." oninput="render()"><select id="statusFilter" onchange="render()"><option value="">Bütün statuslar</option><option value="open">Aktiv</option><option value="progress">Prosesdə</option><option value="done">Həll olunub</option></select><select id="priorityFilter" onchange="render()"><option value="">Bütün prioritetlər</option><option value="high">Təcili</option><option value="medium">Orta</option><option value="low">Aşağı</option></select></div></div><div id="allTable"></div></div>
   </section>
+  <section class="view" id="exams"><div class="heading"><div><h1>Qarson üçün imtahan</h1><p>Menyu biliklərini və servis standartlarını yoxlayın.</p></div><button class="primary admin-only hidden" onclick="openExamModal()">＋ Yeni imtahan</button></div><div class="panel"><div class="panel-head"><h2 id="examListTitle">İmtahanlar</h2><span class="sub">Keçid həddi: 80%</span></div><div id="examList" class="exam-grid"></div></div><div class="panel" style="margin-top:18px"><div class="panel-head"><h2 id="examWorkTitle">İmtahan nəticələri</h2></div><div id="examWork"><div class="empty">İmtahan seçin və ya nəticələrinizə baxın.</div></div></div></section>
   <section class="view" id="finance">
    <div class="heading"><div><h1>Maliyyə Statistikası</h1><p>Nağd gəlir və xərclərin uçotu.</p></div><button class="primary" onclick="openFinanceModal()">＋ Yeni qeyd</button></div>
    <div class="stats finance-stats">
@@ -130,6 +140,8 @@ main{flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px so
 <div class="field full"><label>Şəkil</label><input id="photo" type="file" accept="image/*"></div>
 <div class="form-actions"><button type="button" class="secondary" onclick="closeModal()">Ləğv et</button><button class="primary" type="submit" id="saveBtn">Yadda saxla</button></div>
 </form></div></div>
+<div class="modal-back" id="examModalBack"><div class="modal"><div class="modal-head"><h2 id="examModalTitle">Yeni imtahan</h2><button class="secondary" onclick="closeExamModal()">✕</button></div><form class="form" id="examForm"><input type="hidden" id="examEditId"><div class="field full"><label>İmtahanın adı *</label><input id="examTitle" required maxlength="120" placeholder="Məsələn: Menyu biliyi"></div><div class="field full"><label>Açıqlama</label><textarea id="examDescription" placeholder="İmtahan haqqında qısa məlumat"></textarea></div><div class="field"><label>Vaxt limiti (dəqiqə, 0 = limitsiz)</label><input id="examDuration" type="number" min="0" max="240" value="20"></div><div class="field"><label>Yayımla</label><select id="examPublished"><option value="false">Qaralama</option><option value="true">İştirakçılar üçün açıq</option></select></div><div class="form-actions"><button type="button" class="secondary" onclick="closeExamModal()">Ləğv et</button><button class="primary" type="submit">Yadda saxla</button></div></form></div></div>
+<div class="modal-back" id="questionModalBack"><div class="modal"><div class="modal-head"><h2>Test sualı əlavə et</h2><button class="secondary" onclick="closeQuestionModal()">✕</button></div><form class="form" id="questionForm"><input type="hidden" id="questionExamId"><div class="field full"><label>Sual *</label><textarea id="questionText" required maxlength="1000"></textarea></div><div class="field"><label>A variantı *</label><input id="optionA" required maxlength="300"></div><div class="field"><label>B variantı *</label><input id="optionB" required maxlength="300"></div><div class="field"><label>C variantı *</label><input id="optionC" required maxlength="300"></div><div class="field"><label>D variantı *</label><input id="optionD" required maxlength="300"></div><div class="field"><label>Düzgün cavab</label><select id="correctOption"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div><div class="field"><label>Bal</label><input id="questionPoints" type="number" min="1" max="100" value="1" required></div><div class="form-actions"><button type="button" class="secondary" onclick="closeQuestionModal()">Ləğv et</button><button class="primary" type="submit">Sualı əlavə et</button></div></form></div></div>
 <div class="modal-back" id="financeModalBack"><div class="modal"><div class="modal-head"><h2 id="financeModalTitle">Yeni maliyyə qeydi</h2><button class="secondary" onclick="closeFinanceModal()">✕</button></div>
 <form class="form" id="financeForm"><input type="hidden" id="financeEditId">
 <div class="field"><label>Əməliyyat növü</label><select id="financeType"><option value="income">Gəlir</option><option value="expense">Xərc</option></select></div>
